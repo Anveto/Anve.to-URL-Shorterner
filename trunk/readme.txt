@@ -3,7 +3,7 @@ Contributors: anveto, bigideaguy
 Tags: URL Shortener, URL, Statistics, Anveto
 Requires at least: 3.0
 Tested up to: 4.2
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,6 +27,12 @@ Premium users
 
 - Custom splash pages
 - Export statistics
+
+== Changelog ==
+
+1.0.1
+
+- Fixes to prevent white page errors and better url parsing of posts
 
 == Development ==
 

@@ -4,7 +4,7 @@
 Plugin Name: Anveto URL Shorterner
 Plugin URI: http://anve.to
 Description: Shorten and track statistics of your outgoing urls automatically with Anve.to
-Version: 1.0
+Version: 1.0.1
 Author: Anveto, Markus Tenghamn
 Author URI: http://anveto.com
 License: GPL2
@@ -29,13 +29,22 @@ function anveto_shortenURL($url, $api)
 
 function anveto_getUrls($string)
 {
-    $string = '<xmlcontent>'.$string.'</xmlcontent>';
-    $xml = simplexml_load_string($string);
-    $list = $xml->xpath("//@href");
     $urls = array();
-    foreach ($list as $l) {
-        $arr = $l['href'];
-        $urls[] = trim(str_replace('href=',"",str_replace('"',"",$arr->asXML())));
+    $xmlcontent = '<xmlcontent>' . $string . '</xmlcontent>';
+    $xml = simplexml_load_string($xmlcontent);
+    if (is_object($xml)) {
+        $list = $xml->xpath("//@href");
+        foreach ($list as $l) {
+            $arr = $l['href'];
+            $urls[] = trim(str_replace('href=', "", str_replace('"', "", $arr->asXML())));
+        }
+    } else {
+        $regexp = "<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>(.*)<\/a>";
+        if (preg_match_all("/$regexp/siU", $string, $matches, PREG_SET_ORDER)) {
+            foreach ($matches as $match) {
+                $urls[] = $match[2];
+            }
+        }
     }
     return $urls;
 }
